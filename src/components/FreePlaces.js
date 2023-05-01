@@ -3,20 +3,25 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import { green, lightGreen, red } from '@mui/material/colors';
+import { lightGreen, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import dayjs from 'dayjs';
+import Typography from '@mui/material/Typography';
+import { Box } from '@mui/material';
+
+const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
 
 const FreePlaces = ({ datetime, departure, arrival }) => {
   const [trains, setTrains] = useState([]);
 
   useEffect(() => {
     const fetchTrains = async () => {
-      // const datetimeStr = datetime.
+      const dtStr = datetime.format(DATETIME_FORMAT);
+
       const params = new URLSearchParams({
-        departure,
-        arrival,
-        datetime,
+        departure: departure,
+        arrival: arrival,
+        datetime: dtStr,
       });
 
       const url = '/api/freeplaces?' + params;
@@ -50,8 +55,18 @@ const FreePlaces = ({ datetime, departure, arrival }) => {
 
   return (
     <div>
-      <h4>{dayjs(datetime).format('dddd, MMMM D')}</h4>
-      <List>{trains.map(displayTrain)}</List>
+      <Typography variant='subtitle2'>
+        {datetime.format('dddd, MMMM D')}
+      </Typography>
+      <Box
+        sx={{
+          height: '70vh',
+          overflow: 'hidden',
+          overflowY: 'scroll',
+        }}
+      >
+        <List>{trains.map(displayTrain)}</List>
+      </Box>
     </div>
   );
 };

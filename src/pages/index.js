@@ -1,12 +1,11 @@
-import Travel from '@/components/Travel';
+import Journey from '@/components/Journey';
 import dayjs from 'dayjs';
 
 import { useEffect, useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
-const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Stack from '@mui/material/Stack';
 
 export default function Home() {
   const [datetime, setDatetime] = useState(dayjs());
@@ -23,9 +22,12 @@ export default function Home() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateTimePicker value={datetime} onChange={updateDatetime} />
+      <DatePicker value={datetime} onChange={updateDatetime} />
 
-      <Travel datetime={datetime.format(DATETIME_FORMAT)} />
+      <Stack direction='row'>
+        <Journey numId={0} datetime={datetime} />
+        <Journey numId={1} datetime={datetime} />
+      </Stack>
     </LocalizationProvider>
   );
 }
