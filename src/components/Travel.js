@@ -39,7 +39,6 @@ function Travel({ datetime, key = 0 }) {
 
   return (
     <div className='Travel'>
-      <h3>Travel</h3>
       <AsyncSelect
         instanceId={1}
         placeholder='Departure'
