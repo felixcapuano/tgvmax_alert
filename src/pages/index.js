@@ -1,16 +1,31 @@
 import Travel from '@/components/Travel';
-import { useState } from 'react';
-import Select from 'react-select';
+import dayjs from 'dayjs';
+
+import { useEffect, useState } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
+const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
 
 export default function Home() {
-  const datetime = '2023-04-30T00:00:00';
+  const [datetime, setDatetime] = useState(dayjs());
 
-  // const [datetime, setDatetime] = useState('');
+  useEffect(() => {
+    const stored = localStorage.getItem('datetime');
+    if (stored) setDatetime(dayjs(stored));
+  }, [setDatetime]);
+
+  const updateDatetime = (dt) => {
+    localStorage.setItem('datetime', dt.toISOString());
+    setDatetime(dt);
+  };
 
   return (
-    <div>
-      <input type='datetime-local' id='birthdaytime' name='birthdaytime' />
-      <Travel datetime={datetime}></Travel>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateTimePicker value={datetime} onChange={updateDatetime} />
+
+      <Travel datetime={datetime.format(DATETIME_FORMAT)} />
+    </LocalizationProvider>
   );
 }

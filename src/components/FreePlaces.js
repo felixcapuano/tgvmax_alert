@@ -5,6 +5,7 @@ const FreePlaces = ({ datetime, departure, arrival }) => {
 
   useEffect(() => {
     const fetchTrains = async () => {
+      // const datetimeStr = datetime.
       const params = new URLSearchParams({
         departure,
         arrival,
@@ -15,7 +16,7 @@ const FreePlaces = ({ datetime, departure, arrival }) => {
       const response = await fetch(url, { method: 'GET' });
       const data = await response.json();
 
-      setTrains(data.proposals);
+      setTrains(data.proposals || []);
     };
 
     fetchTrains();
