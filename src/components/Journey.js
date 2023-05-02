@@ -3,9 +3,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import FreePlaces from './FreePlaces';
 import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
 import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 
 const fetchStations = async (input) => {
   const params = new URLSearchParams({ q: input });
@@ -17,14 +17,12 @@ const fetchStations = async (input) => {
   return data.stations;
 };
 
-function Journey({ datetime, numId = 0 }) {
+function Journey({ datetime, identifier = 0 }) {
   const [arrival, setArrival] = useState({ label: '', value: '' });
   const [departure, setDeparture] = useState({ label: '', value: '' });
 
   const [arrivalOptions, setArrivalOptions] = useState([]);
   const [departureOptions, setDepartureOptions] = useState([]);
-
-  const [page, setPage] = useState(1);
 
   const departureInputHandler = async (event, input) => {
     if (input.length < 3) return;
@@ -40,7 +38,7 @@ function Journey({ datetime, numId = 0 }) {
   };
 
   useEffect(() => {
-    const stored = localStorage.getItem(numId);
+    const stored = localStorage.getItem(identifier);
 
     if (stored) {
       const storedObj = JSON.parse(stored);
@@ -52,12 +50,10 @@ function Journey({ datetime, numId = 0 }) {
   const displayPlaces = (dt, dep, arr) => {
     if (!dep?.value || !arr?.value) return null;
 
-    localStorage.setItem(numId, JSON.stringify({ dep, arr }));
-
-    const day = dt.add(page - 1, 'day');
+    localStorage.setItem(identifier, JSON.stringify({ dep, arr }));
 
     return (
-      <FreePlaces datetime={day} departure={dep.value} arrival={arr.value} />
+      <FreePlaces datetime={dt} departure={dep.value} arrival={arr.value} />
     );
   };
 
@@ -88,11 +84,6 @@ function Journey({ datetime, numId = 0 }) {
         />
       </Stack>
       {displayPlaces(datetime, departure, arrival)}
-      <Pagination
-        count={Infinity}
-        page={page}
-        onChange={(e, i) => setPage(i)}
-      />
     </Box>
   );
 }

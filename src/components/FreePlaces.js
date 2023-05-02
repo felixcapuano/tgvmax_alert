@@ -6,7 +6,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import { lightGreen, red } from '@mui/material/colors';
 import Avatar from '@mui/material/Avatar';
 import dayjs from 'dayjs';
-import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
 
 const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
@@ -55,9 +54,6 @@ const FreePlaces = ({ datetime, departure, arrival }) => {
 
   return (
     <div>
-      <Typography variant='subtitle2'>
-        {datetime.format('dddd, MMMM D')}
-      </Typography>
       <Box
         sx={{
           height: '70vh',
