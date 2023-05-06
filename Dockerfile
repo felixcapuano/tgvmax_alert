@@ -16,5 +16,7 @@ COPY . .
 # Build the Next.js application
 RUN npm run build
 
+EXPOSE 8080
+
 # Set the command to start the application in production mode
 CMD ["npm", "start"]
