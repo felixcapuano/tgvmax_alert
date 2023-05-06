@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -13,25 +13,25 @@ const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
 const FreePlaces = ({ datetime, departure, arrival }) => {
   const [trains, setTrains] = useState([]);
 
+  const fetchTrains = useCallback(async () => {
+    const dtStr = datetime.format(DATETIME_FORMAT);
+
+    const params = new URLSearchParams({
+      departure: departure,
+      arrival: arrival,
+      datetime: dtStr,
+    });
+
+    const url = '/api/freeplaces?' + params;
+    const response = await fetch(url, { method: 'GET' });
+    const data = await response.json();
+
+    setTrains(data.proposals || []);
+  });
+
   useEffect(() => {
-    const fetchTrains = async () => {
-      const dtStr = datetime.format(DATETIME_FORMAT);
-
-      const params = new URLSearchParams({
-        departure: departure,
-        arrival: arrival,
-        datetime: dtStr,
-      });
-
-      const url = '/api/freeplaces?' + params;
-      const response = await fetch(url, { method: 'GET' });
-      const data = await response.json();
-
-      setTrains(data.proposals || []);
-    };
-
     fetchTrains();
-  }, [departure, arrival, datetime]);
+  });
 
   const displayTrain = (train) => {
     const departureTimeStr = dayjs(train.departureDate).format('HH:mm');

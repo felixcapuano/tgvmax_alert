@@ -8,6 +8,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 
 const defaultDatetime = () => dayjs().hour(0).minute(0).second(0);
 
@@ -29,7 +30,7 @@ export default function Home() {
     if (storedDatetime) setDatetime(dayjs(storedDatetime));
 
     setJourneys(loadJourneysIdentifier().map((i) => ({ id: i })));
-  }, [setDatetime]);
+  }, [setDatetime, setJourneys]);
 
   const updateDatetime = (dt) => {
     localStorage.setItem('datetime', dt.toISOString());
@@ -39,6 +40,7 @@ export default function Home() {
   const JourneyTile = ({ identifier, datetime }) => {
     return (
       <Paper>
+        <Button onClick={() => removeJourneyHandler(identifier)}>-</Button>
         <Journey identifier={identifier} datetime={datetime} />
       </Paper>
     );
@@ -47,8 +49,12 @@ export default function Home() {
   const resetHandler = () => setDatetime(defaultDatetime());
   const previousHandler = () => setDatetime((dt) => dt.subtract(1, 'day'));
   const nextHandler = () => setDatetime((dt) => dt.add(1, 'day'));
-  const newJourneyHandler = () => {
+
+  const createJourneyHandler = () => {
     setJourneys([...journeys, { id: createIdentifier() }]);
+  };
+  const removeJourneyHandler = (idToRemove) => {
+    setJourneys(journeys.filter((j) => j.id !== idToRemove));
   };
 
   return (
@@ -60,12 +66,14 @@ export default function Home() {
         <Button onClick={nextHandler}>Next</Button>
       </Stack>
 
-      <Stack direction='row'>
-        {journeys.map(({ id }) => (
-          <JourneyTile key={id} datetime={datetime} identifier={id} />
-        ))}
-        <Button onClick={newJourneyHandler}>+</Button>
-      </Stack>
+      <Box className='Journeys'>
+        <Stack direction='row'>
+          {journeys.map(({ id }) => (
+            <JourneyTile key={id} datetime={datetime} identifier={id} />
+          ))}
+          <Button onClick={createJourneyHandler}>+</Button>
+        </Stack>
+      </Box>
     </LocalizationProvider>
   );
 }

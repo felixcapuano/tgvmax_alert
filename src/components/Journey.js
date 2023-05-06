@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import FreePlaces from './FreePlaces';
 import Stack from '@mui/material/Stack';
-import Pagination from '@mui/material/Pagination';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 
 const fetchStations = async (input) => {
   const params = new URLSearchParams({ q: input });
@@ -24,18 +22,18 @@ function Journey({ datetime, identifier = 0 }) {
   const [arrivalOptions, setArrivalOptions] = useState([]);
   const [departureOptions, setDepartureOptions] = useState([]);
 
-  const departureInputHandler = async (event, input) => {
+  const departureInputHandler = useCallback(async (event, input) => {
     if (input.length < 3) return;
 
     const stations = await fetchStations(input);
     setDepartureOptions(stations);
-  };
-  const arrivalInputHandler = async (event, input) => {
+  });
+  const arrivalInputHandler = useCallback(async (event, input) => {
     if (input.length < 3) return;
 
     const stations = await fetchStations(input);
     setArrivalOptions(stations);
-  };
+  });
 
   useEffect(() => {
     const stored = localStorage.getItem(identifier);
