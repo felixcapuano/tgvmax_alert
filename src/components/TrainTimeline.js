@@ -1,8 +1,15 @@
+import freeplaces from '@/pages/api/freeplaces';
 import { fetchTrains } from '@/utils/fetchs';
-import { Avatar, Step, StepButton, StepLabel } from '@mui/material';
-import Stepper from '@mui/material/Stepper';
+import {
+  Avatar,
+  Step,
+  StepButton,
+  StepLabel,
+  Stack,
+  Chip,
+} from '@mui/material';
 import dayjs from 'dayjs';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useEffect } from 'react';
 
 const TrainTimeline = ({ datetime, departure, arrival }) => {
@@ -22,20 +29,25 @@ const TrainTimeline = ({ datetime, departure, arrival }) => {
     freePlaces,
     trainNumber,
   }) => {
-    const departureDatetime = dayjs(departureDate);
-    const arrivalDatetime = dayjs(arrivalDate);
+    const depTime = dayjs(departureDate).format('H[h]mm');
+    const arrTime = dayjs(arrivalDate).format('H[h]mm');
+
+    const label = `${depTime}`; // - ${arrTime}`;
 
     return (
-      <Step key={trainNumber}>
-        <StepLabel>{departureDatetime.format('H[h]mm')}</StepLabel>
-      </Step>
+      <Chip
+        key={trainNumber}
+        label={label}
+        color='success'
+        avatar={<Avatar>{freePlaces}</Avatar>}
+      />
     );
   };
 
   return (
-    <div>
-      <Stepper>{trains.map(displayTrain)}</Stepper>
-    </div>
+    <Stack className='train-timeline' direction='row' spacing={1}>
+      {trains.map(displayTrain)}
+    </Stack>
   );
 };
 

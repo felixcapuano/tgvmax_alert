@@ -1,0 +1,17 @@
+.departure-filter {
+  margin: 5px;
+}
+
+.arrival-filter {
+}
+
+.arrival {
+}
+
+.departure {
+  padding: 10px;
+}
+
+.train-timeline {
+  overflow: auto;
+}

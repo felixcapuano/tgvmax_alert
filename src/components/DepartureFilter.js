@@ -4,6 +4,9 @@ import StationSelector from '@/components/StationSelector';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
+import ClearIcon from '@mui/icons-material/Clear';
+import Paper from '@mui/material/Paper';
 
 const DepartureFilter = ({ datetime }) => {
   const [departures, setDepartures] = useState([]);
@@ -19,23 +22,27 @@ const DepartureFilter = ({ datetime }) => {
 
   const displayDeparture = (dep) => {
     return (
-      <div key={dep.index}>
-        <Stack direction='horizontal'>
-          <Button onClick={() => closeHandler(dep.index)}>-</Button>
-          <Typography>{dep.label}</Typography>
-        </Stack>
+      <Paper key={dep.index} elevation={5} className='departure'>
+        <Grid container alignItems='center'>
+          <Grid item xs={11}>
+            <Typography>from : {dep.label}</Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Button onClick={() => closeHandler(dep.index)}>
+              <ClearIcon />
+            </Button>
+          </Grid>
+        </Grid>
         <ArrivalFilter datetime={datetime} departure={dep} />
-      </div>
+      </Paper>
     );
   };
 
   return (
-    <div>
+    <Stack className='departure-filter' direction='column' spacing={2}>
       {departures.map(displayDeparture)}
-      <div>
-        <StationSelector onChange={stationHandler} placeholder='Departure' />
-      </div>
-    </div>
+      <StationSelector onChange={stationHandler} placeholder='Add departure' />
+    </Stack>
   );
 };
 

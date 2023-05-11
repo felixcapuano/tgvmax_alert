@@ -4,6 +4,9 @@ import Typography from '@mui/material/Typography';
 import TrainTimeline from '@/components/TrainTimeline';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { Stack } from '@mui/material';
+import RemoveIcon from '@mui/icons-material/Remove';
+import Divider from '@mui/material/Divider';
 
 const ArrivalFilter = ({ datetime, departure }) => {
   const [arrivals, setArrivals] = useState([]);
@@ -19,31 +22,36 @@ const ArrivalFilter = ({ datetime, departure }) => {
 
   const displayArrival = (arr) => {
     return (
-      <Grid key={arr.index} container>
-        <Grid xs={1}>
-          <Button onClick={() => closeHandler(arr.index)}>-</Button>
+      <Grid container key={arr.index} alignItems='center'>
+        <Grid item xs={2}>
+          <Typography>to : {arr.label}</Typography>
         </Grid>
-        <Grid xs={3}>
-          <Typography>{arr.label}</Typography>
-        </Grid>
-        <Grid xs={8}>
+        <Grid item xs={9}>
           <TrainTimeline
             datetime={datetime}
             departure={departure}
             arrival={arr}
           />
         </Grid>
+        <Grid item xs={1}>
+          <Button onClick={() => closeHandler(arr.index)}>
+            <RemoveIcon />
+          </Button>
+        </Grid>
       </Grid>
     );
   };
 
   return (
-    <div>
+    <Stack
+      className='arrival-filter'
+      direction='column'
+      spacing={0.5}
+      divider={<Divider orientation='horizontal' flexItem />}
+    >
       {arrivals.map(displayArrival)}
-      <div>
-        <StationSelector onChange={stationHandler} placeholder='Arrival' />
-      </div>
-    </div>
+      <StationSelector onChange={stationHandler} placeholder='Add arrival' />
+    </Stack>
   );
 };
 

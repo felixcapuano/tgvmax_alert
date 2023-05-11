@@ -26,6 +26,7 @@ const StationSelector = ({ onChange, placeholder }) => {
         onChange(e, i);
         setStation(defaultStation);
       }}
+      size='small'
       options={stationOptions}
       onInputChange={stationInputHandler}
       filterOptions={(x) => x}
