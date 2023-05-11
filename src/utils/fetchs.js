@@ -1,3 +1,5 @@
+const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
+
 const fetchStations = async (input) => {
   const params = new URLSearchParams({ q: input });
 
@@ -8,14 +10,15 @@ const fetchStations = async (input) => {
   return data.stations;
 };
 
-const fetchTrains = async () => {
+const fetchTrains = async (datetime, departure, arrival) => {
   const dtStr = datetime.format(DATETIME_FORMAT);
 
   const params = new URLSearchParams({
-    departure: departure,
-    arrival: arrival,
+    departure: departure.value,
+    arrival: arrival.value,
     datetime: dtStr,
   });
+  console.log(params);
 
   const url = '/api/freeplaces?' + params;
   const response = await fetch(url, { method: 'GET' });

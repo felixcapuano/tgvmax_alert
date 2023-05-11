@@ -3,8 +3,10 @@ import TextField from '@mui/material/TextField';
 import { useState, useCallback } from 'react';
 import { fetchStations } from '@/utils/fetchs';
 
+const defaultStation = { label: '', value: '' };
+
 const StationSelector = ({ onChange, placeholder }) => {
-  const [station, setStation] = useState({ label: '', value: '' });
+  const [station, setStation] = useState(defaultStation);
   const [stationOptions, setStationOptions] = useState([]);
 
   const stationInputHandler = useCallback(
@@ -20,11 +22,13 @@ const StationSelector = ({ onChange, placeholder }) => {
   return (
     <Autocomplete
       value={station}
-      onChange={onChange}
+      onChange={(e, i) => {
+        onChange(e, i);
+        setStation(defaultStation);
+      }}
       options={stationOptions}
       onInputChange={stationInputHandler}
       filterOptions={(x) => x}
-      isOptionEqualToValue={(o, v) => o.label === v}
       renderInput={(params) => <TextField {...params} label={placeholder} />}
       disablePortal
       fullWidth

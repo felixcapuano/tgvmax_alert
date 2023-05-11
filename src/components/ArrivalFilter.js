@@ -24,13 +24,13 @@ const ArrivalFilter = ({ datetime, departure }) => {
           <Button onClick={() => closeHandler(arr.index)}>-</Button>
         </Grid>
         <Grid xs={3}>
-          <Typography>{'> ' + arr.label}</Typography>
+          <Typography>{arr.label}</Typography>
         </Grid>
         <Grid xs={8}>
           <TrainTimeline
             datetime={datetime}
             departure={departure}
-            arrivals={arrivals}
+            arrival={arr}
           />
         </Grid>
       </Grid>
@@ -40,9 +40,9 @@ const ArrivalFilter = ({ datetime, departure }) => {
   return (
     <div>
       {arrivals.map(displayArrival)}
-      <dic>
+      <div>
         <StationSelector onChange={stationHandler} placeholder='Arrival' />
-      </dic>
+      </div>
     </div>
   );
 };

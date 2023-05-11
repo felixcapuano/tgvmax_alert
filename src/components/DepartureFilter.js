@@ -18,7 +18,6 @@ const DepartureFilter = ({ datetime }) => {
   };
 
   const displayDeparture = (dep) => {
-    console.log(dep);
     return (
       <div key={dep.index}>
         <Stack direction='horizontal'>
