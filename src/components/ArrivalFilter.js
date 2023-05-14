@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import StationSelector from '@/components/StationSelector';
 import Typography from '@mui/material/Typography';
 import TrainTimeline from '@/components/TrainTimeline';
@@ -11,13 +11,26 @@ import Divider from '@mui/material/Divider';
 const ArrivalFilter = ({ datetime, departure }) => {
   const [arrivals, setArrivals] = useState([]);
 
+  useEffect(() => {
+    const rawStore = localStorage.getItem(departure.index);
+    if (rawStore) setArrivals(JSON.parse(rawStore));
+  }, [setArrivals]);
+
+  const updateStorage = (newArrivals) => {
+    localStorage.setItem(departure.index, JSON.stringify(newArrivals));
+  };
+
   const stationHandler = (e, i) => {
     if (!i) return;
-    setArrivals([...arrivals, { ...i, index: arrivals.length }]);
+    const newArrivals = [...arrivals, { ...i, index: arrivals.length }];
+    setArrivals(newArrivals);
+    updateStorage(newArrivals);
   };
 
   const closeHandler = (indexToRemove) => {
-    setArrivals(arrivals.filter(({ index }) => index !== indexToRemove));
+    const newArrivals = arrivals.filter(({ index }) => index !== indexToRemove);
+    setArrivals(newArrivals);
+    updateStorage(newArrivals);
   };
 
   const displayArrival = (arr) => {

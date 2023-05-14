@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrivalFilter from '@/components/ArrivalFilter';
 import StationSelector from '@/components/StationSelector';
 import Typography from '@mui/material/Typography';
@@ -11,13 +11,30 @@ import Paper from '@mui/material/Paper';
 const DepartureFilter = ({ datetime }) => {
   const [departures, setDepartures] = useState([]);
 
+  useEffect(() => {
+    const rawStore = localStorage.getItem('departures');
+    if (rawStore) setDepartures(JSON.parse(rawStore));
+  }, [setDepartures]);
+
+  const updateStorage = (newDepartures) => {
+    localStorage.setItem('departures', JSON.stringify(newDepartures));
+  };
+
   const stationHandler = (e, i) => {
     if (!i) return;
-    setDepartures([...departures, { ...i, index: departures.length }]);
+    const newDepartures = [...departures, { ...i, index: departures.length }];
+
+    setDepartures(newDepartures);
+    updateStorage(newDepartures);
   };
 
   const closeHandler = (indexToRemove) => {
-    setDepartures(departures.filter(({ index }) => index !== indexToRemove));
+    const newDepartures = departures.filter(
+      ({ index }) => index !== indexToRemove
+    );
+
+    setDepartures(newDepartures);
+    updateStorage(newDepartures);
   };
 
   const displayDeparture = (dep) => {

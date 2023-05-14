@@ -8,41 +8,45 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
-const defaultDatetime = () => dayjs().hour(0).minute(0).second(0);
-
-// const createIdentifier = () => {
-//   return 'jid-' + (Math.random() + 1).toString(36).substring(7);
-// };
-
-// const loadJourneysIdentifier = () => {
-//   const storageKeys = Object.keys({ ...localStorage });
-//   return storageKeys.filter((k) => k.startsWith('jid-'));
-// };
+const defaultDatetime = dayjs().hour(0).minute(0).second(0);
 
 const DateFilter = () => {
-  const [datetime, setDatetime] = useState(defaultDatetime());
+  const [datetime, setDatetime] = useState(defaultDatetime);
 
   useEffect(() => {
     const storedDatetime = localStorage.getItem('datetime');
     if (storedDatetime) setDatetime(dayjs(storedDatetime));
+  }, [setDatetime]);
 
-    // setJourneys(loadJourneysIdentifier().map((i) => ({ id: i })));
-  }, []);
-
-  const updateDatetime = (dt) => {
-    localStorage.setItem('datetime', dt.toISOString());
-    setDatetime(dt);
+  const updateStorage = (newDatetime) => {
+    localStorage.setItem('datetime', newDatetime.toISOString());
   };
 
-  const resetHandler = () => setDatetime(defaultDatetime());
-  const previousHandler = () => setDatetime((dt) => dt.subtract(1, 'day'));
-  const nextHandler = () => setDatetime((dt) => dt.add(1, 'day'));
+  const selectHandler = (dt) => {
+    setDatetime(dt);
+    updateStorage(dt);
+  };
+
+  const resetHandler = () => {
+    setDatetime(defaultDatetime);
+    updateStorage(defaultDatetime);
+  };
+  const previousHandler = () => {
+    const newDatetime = datetime.subtract(1, 'day');
+    setDatetime(newDatetime);
+    updateStorage(newDatetime);
+  };
+  const nextHandler = () => {
+    const newDatetime = datetime.add(1, 'day');
+    setDatetime(newDatetime);
+    updateStorage(newDatetime);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack direction='row'>
         <Button onClick={previousHandler}>Previous</Button>
-        <DatePicker value={datetime} onChange={updateDatetime} />
+        <DatePicker value={datetime} onChange={selectHandler} />
         <Button onClick={resetHandler}>Reset</Button>
         <Button onClick={nextHandler}>Next</Button>
       </Stack>
