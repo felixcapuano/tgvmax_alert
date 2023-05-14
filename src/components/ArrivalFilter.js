@@ -7,6 +7,8 @@ import Button from '@mui/material/Button';
 import { Stack } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Divider from '@mui/material/Divider';
+import SportsScoreIcon from '@mui/icons-material/SportsScore';
+import HoverIcon from './HoverIcon';
 
 const ArrivalFilter = ({ datetime, departure }) => {
   const [arrivals, setArrivals] = useState([]);
@@ -35,23 +37,21 @@ const ArrivalFilter = ({ datetime, departure }) => {
 
   const displayArrival = (arr) => {
     return (
-      <Grid container key={arr.index} alignItems='center'>
-        <Grid item xs={2}>
-          <Typography>to : {arr.label}</Typography>
-        </Grid>
-        <Grid item xs={9}>
-          <TrainTimeline
-            datetime={datetime}
-            departure={departure}
-            arrival={arr}
+      <Stack key={arr.index} direction='column'>
+        <Stack direction='row' alignItems='center' spacing={1}>
+          <HoverIcon
+            icon={<SportsScoreIcon />}
+            hoverIcon={<RemoveIcon color='error' />}
+            onClick={() => closeHandler(arr.index)}
           />
-        </Grid>
-        <Grid item xs={1}>
-          <Button onClick={() => closeHandler(arr.index)}>
-            <RemoveIcon />
-          </Button>
-        </Grid>
-      </Grid>
+          <Typography>{arr.label}</Typography>
+        </Stack>
+        <TrainTimeline
+          datetime={datetime}
+          departure={departure}
+          arrival={arr}
+        />
+      </Stack>
     );
   };
 

@@ -4,9 +4,13 @@ import StationSelector from '@/components/StationSelector';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
+import TrainIcon from '@mui/icons-material/Train';
 import ClearIcon from '@mui/icons-material/Clear';
-import Paper from '@mui/material/Paper';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HoverIcon from '@/components/HoverIcon';
 
 const DepartureFilter = ({ datetime }) => {
   const [departures, setDepartures] = useState([]);
@@ -39,26 +43,33 @@ const DepartureFilter = ({ datetime }) => {
 
   const displayDeparture = (dep) => {
     return (
-      <Paper key={dep.index} elevation={5} className='departure'>
-        <Grid container alignItems='center'>
-          <Grid item xs={11}>
-            <Typography>from : {dep.label}</Typography>
-          </Grid>
-          <Grid item xs={1}>
-            <Button onClick={() => closeHandler(dep.index)}>
-              <ClearIcon />
-            </Button>
-          </Grid>
-        </Grid>
-        <ArrivalFilter datetime={datetime} departure={dep} />
-      </Paper>
+      <Accordion key={dep.index} className='departure' defaultExpanded={true}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls='panel1a-content'
+          id='panel1a-header'
+        >
+          <Stack direction='row' alignItems='center' spacing={2}>
+            <HoverIcon
+              icon={<TrainIcon />}
+              hoverIcon={<ClearIcon color='error' />}
+              onClick={() => closeHandler(dep.index)}
+            />
+
+            <Typography>{dep.label}</Typography>
+          </Stack>
+        </AccordionSummary>
+        <AccordionDetails>
+          <ArrivalFilter datetime={datetime} departure={dep} />
+        </AccordionDetails>
+      </Accordion>
     );
   };
 
   return (
     <Stack className='departure-filter' direction='column' spacing={2}>
-      {departures.map(displayDeparture)}
       <StationSelector onChange={stationHandler} placeholder='Add departure' />
+      {departures.map(displayDeparture)}
     </Stack>
   );
 };

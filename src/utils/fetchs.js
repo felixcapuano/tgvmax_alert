@@ -18,8 +18,6 @@ const fetchTrains = async (datetime, departure, arrival) => {
     arrival: arrival.value,
     datetime: dtStr,
   });
-  console.log(params);
-
   const url = '/api/freeplaces?' + params;
   const response = await fetch(url, { method: 'GET' });
   const data = await response.json();
