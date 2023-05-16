@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import ArrivalFilter from '@/components/ArrivalFilter';
 import StationSelector from '@/components/StationSelector';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import TrainIcon from '@mui/icons-material/Train';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -12,38 +11,39 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HoverIcon from '@/components/HoverIcon';
 
+const updateStorage = (newDepartures) => {
+  localStorage.setItem('departures', JSON.stringify(newDepartures));
+};
+
 const DepartureFilter = ({ datetime }) => {
-  const [departures, setDepartures] = useState([]);
+  const [departures, setDepartures] = useState({});
 
   useEffect(() => {
     const rawStore = localStorage.getItem('departures');
     if (rawStore) setDepartures(JSON.parse(rawStore));
   }, [setDepartures]);
 
-  const updateStorage = (newDepartures) => {
-    localStorage.setItem('departures', JSON.stringify(newDepartures));
-  };
-
   const stationHandler = (e, i) => {
     if (!i) return;
-    const newDepartures = [...departures, { ...i, index: departures.length }];
+    const newDepartures = { ...departures, [i.value]: i };
 
     setDepartures(newDepartures);
     updateStorage(newDepartures);
   };
 
-  const closeHandler = (indexToRemove) => {
-    const newDepartures = departures.filter(
-      ({ index }) => index !== indexToRemove
-    );
+  const closeHandler = (valueToRemove) => {
+    const newDepartures = structuredClone(departures);
+    delete newDepartures[valueToRemove];
 
     setDepartures(newDepartures);
     updateStorage(newDepartures);
+    localStorage.removeItem(valueToRemove);
   };
 
-  const displayDeparture = (dep) => {
+  const displayDeparture = (departureKey) => {
+    const dep = departures[departureKey];
     return (
-      <Accordion key={dep.index} className='departure' defaultExpanded={true}>
+      <Accordion key={dep.value} className='departure' defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls='panel1a-content'
@@ -53,7 +53,7 @@ const DepartureFilter = ({ datetime }) => {
             <HoverIcon
               icon={<TrainIcon />}
               hoverIcon={<ClearIcon color='error' />}
-              onClick={() => closeHandler(dep.index)}
+              onClick={() => closeHandler(dep.value)}
             />
 
             <Typography>{dep.label}</Typography>
@@ -69,7 +69,7 @@ const DepartureFilter = ({ datetime }) => {
   return (
     <Stack className='departure-filter' direction='column' spacing={2}>
       <StationSelector onChange={stationHandler} placeholder='Add departure' />
-      {departures.map(displayDeparture)}
+      {Object.keys(departures).map(displayDeparture)}
     </Stack>
   );
 };

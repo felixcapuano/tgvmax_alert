@@ -11,38 +11,37 @@ import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import HoverIcon from './HoverIcon';
 
 const ArrivalFilter = ({ datetime, departure }) => {
-  const [arrivals, setArrivals] = useState([]);
+  const [arrivals, setArrivals] = useState({});
 
   useEffect(() => {
-    const rawStore = localStorage.getItem(departure.index);
+    const rawStore = localStorage.getItem(departure.value);
     if (rawStore) setArrivals(JSON.parse(rawStore));
   }, [setArrivals]);
 
-  const updateStorage = (newArrivals) => {
-    localStorage.setItem(departure.index, JSON.stringify(newArrivals));
-  };
-
   const stationHandler = (e, i) => {
     if (!i) return;
-    const newArrivals = [...arrivals, { ...i, index: arrivals.length }];
+
+    const newArrivals = { ...arrivals, [i.value]: i };
     setArrivals(newArrivals);
-    updateStorage(newArrivals);
+    localStorage.setItem(departure.value, JSON.stringify(newArrivals));
   };
 
-  const closeHandler = (indexToRemove) => {
-    const newArrivals = arrivals.filter(({ index }) => index !== indexToRemove);
+  const closeHandler = (valueToRemove) => {
+    const newArrivals = structuredClone(arrivals);
+    delete newArrivals[valueToRemove];
     setArrivals(newArrivals);
-    updateStorage(newArrivals);
+    localStorage.removeItem(departure.value);
   };
 
-  const displayArrival = (arr) => {
+  const displayArrival = (arrivalKey) => {
+    const arr = arrivals[arrivalKey];
     return (
       <Stack key={arr.index} direction='column'>
         <Stack direction='row' alignItems='center' spacing={1}>
           <HoverIcon
             icon={<SportsScoreIcon />}
             hoverIcon={<RemoveIcon color='error' />}
-            onClick={() => closeHandler(arr.index)}
+            onClick={() => closeHandler(arr.value)}
           />
           <Typography>{arr.label}</Typography>
         </Stack>
@@ -62,7 +61,7 @@ const ArrivalFilter = ({ datetime, departure }) => {
       spacing={0.5}
       divider={<Divider orientation='horizontal' flexItem />}
     >
-      {arrivals.map(displayArrival)}
+      {Object.keys(arrivals).map(displayArrival)}
       <StationSelector onChange={stationHandler} placeholder='Add arrival' />
     </Stack>
   );
