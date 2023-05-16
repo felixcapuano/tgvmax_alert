@@ -4,7 +4,10 @@ const fetchStations = async (input) => {
   const params = new URLSearchParams({ q: input });
 
   const url = '/api/stations?' + params;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, {
+    method: 'GET',
+    next: { revalidate: 600 },
+  });
   const data = await response.json();
 
   return data.stations;
@@ -19,7 +22,10 @@ const fetchTrains = async (datetime, departure, arrival) => {
     datetime: dtStr,
   });
   const url = '/api/freeplaces?' + params;
-  const response = await fetch(url, { method: 'GET' });
+  const response = await fetch(url, {
+    method: 'GET',
+    next: { revalidate: 60 },
+  });
   const data = await response.json();
 
   return data.proposals || [];

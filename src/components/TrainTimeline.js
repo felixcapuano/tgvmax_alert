@@ -1,13 +1,5 @@
-import freeplaces from '@/pages/api/freeplaces';
 import { fetchTrains } from '@/utils/fetchs';
-import {
-  Avatar,
-  Step,
-  StepButton,
-  StepLabel,
-  Stack,
-  Chip,
-} from '@mui/material';
+import { Avatar, Stack, Chip } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useEffect } from 'react';

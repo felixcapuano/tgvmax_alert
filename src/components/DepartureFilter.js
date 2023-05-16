@@ -1,19 +1,8 @@
 import { useEffect, useState } from 'react';
-import ArrivalFilter from '@/components/ArrivalFilter';
 import StationSelector from '@/components/StationSelector';
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import TrainIcon from '@mui/icons-material/Train';
-import ClearIcon from '@mui/icons-material/Clear';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HoverIcon from '@/components/HoverIcon';
-
-const updateStorage = (newDepartures) => {
-  localStorage.setItem('departures', JSON.stringify(newDepartures));
-};
+import Departure from './Departure';
+import { removeArrivalStorage, setDeparturesStorage } from '@/utils/storage';
 
 const DepartureFilter = ({ datetime }) => {
   const [departures, setDepartures] = useState({});
@@ -25,44 +14,36 @@ const DepartureFilter = ({ datetime }) => {
 
   const stationHandler = (e, i) => {
     if (!i) return;
+    i.expanded = true;
     const newDepartures = { ...departures, [i.value]: i };
 
     setDepartures(newDepartures);
-    updateStorage(newDepartures);
+    setDeparturesStorage(newDepartures);
   };
 
-  const closeHandler = (valueToRemove) => {
+  const closeHandler = (departureKey) => {
     const newDepartures = structuredClone(departures);
-    delete newDepartures[valueToRemove];
+    delete newDepartures[departureKey];
 
     setDepartures(newDepartures);
-    updateStorage(newDepartures);
-    localStorage.removeItem(valueToRemove);
+    setDeparturesStorage(newDepartures);
+    removeArrivalStorage(departureKey);
+  };
+
+  const accordionChangeHandler = (departure, expanded) => {
+    departure.expanded = expanded;
+    setDeparturesStorage(departures);
   };
 
   const displayDeparture = (departureKey) => {
-    const dep = departures[departureKey];
     return (
-      <Accordion key={dep.value} className='departure' defaultExpanded={true}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls='panel1a-content'
-          id='panel1a-header'
-        >
-          <Stack direction='row' alignItems='center' spacing={2}>
-            <HoverIcon
-              icon={<TrainIcon />}
-              hoverIcon={<ClearIcon color='error' />}
-              onClick={() => closeHandler(dep.value)}
-            />
-
-            <Typography>{dep.label}</Typography>
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <ArrivalFilter datetime={datetime} departure={dep} />
-        </AccordionDetails>
-      </Accordion>
+      <Departure
+        key={departureKey}
+        datetime={datetime}
+        departure={departures[departureKey]}
+        closeHandler={closeHandler}
+        accordionChangeHandler={accordionChangeHandler}
+      />
     );
   };
 

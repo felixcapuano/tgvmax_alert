@@ -9,6 +9,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import Divider from '@mui/material/Divider';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import HoverIcon from './HoverIcon';
+import { removeArrivalStorage } from '@/utils/storage';
 
 const ArrivalFilter = ({ datetime, departure }) => {
   const [arrivals, setArrivals] = useState({});
@@ -29,14 +30,15 @@ const ArrivalFilter = ({ datetime, departure }) => {
   const closeHandler = (valueToRemove) => {
     const newArrivals = structuredClone(arrivals);
     delete newArrivals[valueToRemove];
+
     setArrivals(newArrivals);
-    localStorage.removeItem(departure.value);
+    removeArrivalStorage(departure.value);
   };
 
   const displayArrival = (arrivalKey) => {
     const arr = arrivals[arrivalKey];
     return (
-      <Stack key={arr.index} direction='column'>
+      <Stack key={arrivalKey} direction='column'>
         <Stack direction='row' alignItems='center' spacing={1}>
           <HoverIcon
             icon={<SportsScoreIcon />}
