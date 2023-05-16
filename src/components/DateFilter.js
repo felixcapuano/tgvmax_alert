@@ -57,7 +57,12 @@ const DateFilter = () => {
         >
           <NavigateBeforeIcon />
         </Fab>
-        <DatePicker value={datetime} onChange={selectHandler} />
+        <DatePicker
+          value={datetime}
+          onChange={selectHandler}
+          format='LL'
+          minDate={dayjs()}
+        />
         <Fab className='round-button' onClick={resetHandler} variant='primary'>
           Now
         </Fab>
