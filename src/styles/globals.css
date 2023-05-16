@@ -14,3 +14,25 @@
 .train-timeline {
   overflow: auto;
 }
+.datetime-picker-wrapper {
+  position: fixed;
+  z-index: 10;
+  bottom: 0px;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 2%;
+}
+
+.datetime-picker-wrapper > * {
+  background-color: white;
+}
+
+.disable-full-opacity:disabled {
+  background-color: whitesmoke;
+  opacity: 1;
+}
+
+/* .datetime-picker {
+  justify-content: center;
+  background-color: white;
+} */

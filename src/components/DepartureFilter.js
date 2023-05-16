@@ -49,8 +49,8 @@ const DepartureFilter = ({ datetime }) => {
 
   return (
     <Stack className='departure-filter' direction='column' spacing={2}>
-      <StationSelector onChange={stationHandler} placeholder='Add departure' />
       {Object.keys(departures).map(displayDeparture)}
+      <StationSelector onChange={stationHandler} placeholder='Add departure' />
     </Stack>
   );
 };
