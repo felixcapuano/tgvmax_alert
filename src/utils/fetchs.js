@@ -1,3 +1,5 @@
+// TODO Deal with 400/500 error with no body
+
 const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss'; // 2023-04-30T00:00:00
 
 const fetchStations = async (input) => {
