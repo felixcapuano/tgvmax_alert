@@ -1,3 +1,6 @@
+// TODO Change Now button and integrate it in TextField
+// TODO Rounded TextField
+
 import dayjs from 'dayjs';
 
 import DepartureFilter from '@/components/DepartureFilter';
@@ -6,9 +9,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
@@ -71,6 +73,7 @@ const DateFilter = () => {
         </Fab>
       </Stack>
       <DepartureFilter datetime={datetime} />
+      <Box height='10vh' />
     </LocalizationProvider>
   );
 };
