@@ -1,21 +1,16 @@
-// TODO replace by IconButton
-
 import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
 
 const HoverIcon = ({ icon, hoverIcon, onClick }) => {
   const [hovered, setHovered] = useState(false);
 
-  const mouseEnterHandler = () => setHovered(true);
-  const mouseLeaveHandler = () => setHovered(false);
-
   return (
-    <div
-      onMouseEnter={mouseEnterHandler}
-      onMouseLeave={mouseLeaveHandler}
-      onClick={onClick}
+    <IconButton
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       {hovered ? hoverIcon : icon}
-    </div>
+    </IconButton>
   );
 };
 

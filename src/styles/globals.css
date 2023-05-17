@@ -14,16 +14,16 @@
 .train-timeline {
   overflow: auto;
 }
-.datetime-picker-wrapper {
+.date-selector {
   position: fixed;
   z-index: 10;
   bottom: 0px;
   width: 100%;
   justify-content: center;
-  margin-bottom: 2%;
+  margin-bottom: 1%;
 }
 
-.datetime-picker-wrapper > * {
+.date-selector > * {
   background-color: white;
 }
 

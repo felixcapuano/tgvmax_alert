@@ -8,6 +8,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import HoverIcon from '@/components/HoverIcon';
+import { useState } from 'react';
 
 const Departure = ({
   datetime,
@@ -15,11 +16,16 @@ const Departure = ({
   closeHandler,
   accordionChangeHandler,
 }) => {
+  const [expanded, setExpanded] = useState(departure.expanded);
+
   return (
     <Accordion
       className='departure'
-      defaultExpanded={departure.expanded}
-      onChange={(e, exp) => accordionChangeHandler(departure, exp)}
+      expanded={expanded}
+      onChange={(e, exp) => {
+        setExpanded(exp);
+        accordionChangeHandler(departure, exp);
+      }}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}

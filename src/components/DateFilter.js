@@ -1,4 +1,3 @@
-// TODO Change Now button and integrate it in TextField
 // TODO Rounded TextField
 
 import dayjs from 'dayjs';
@@ -50,7 +49,7 @@ const DateFilter = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Stack className='datetime-picker-wrapper' direction='row' spacing={1}>
+      <Stack className='date-selector' direction='row' spacing={1}>
         <Fab
           className='disable-full-opacity'
           onClick={previousHandler}
@@ -63,11 +62,12 @@ const DateFilter = () => {
           value={datetime}
           onChange={selectHandler}
           format='LL'
-          minDate={dayjs()}
+          slotProps={{
+            actionBar: {
+              actions: ['today'],
+            },
+          }}
         />
-        <Fab className='round-button' onClick={resetHandler} variant='primary'>
-          Now
-        </Fab>
         <Fab className='round-button' onClick={nextHandler} variant='primary'>
           <NavigateNextIcon />
         </Fab>

@@ -10,8 +10,9 @@ const fetchStations = async (input) => {
     method: 'GET',
     next: { revalidate: 600 },
   });
-  const data = await response.json();
+  if (response.status != 200) return [];
 
+  const data = await response.json();
   return data.stations;
 };
 
@@ -28,8 +29,10 @@ const fetchTrains = async (datetime, departure, arrival) => {
     method: 'GET',
     next: { revalidate: 60 },
   });
-  const data = await response.json();
 
+  if (response.status != 200) return [];
+
+  const data = await response.json();
   return data.proposals || [];
 };
 
