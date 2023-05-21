@@ -31,6 +31,7 @@ const Departure = ({
         setExpanded(exp);
         accordionChangeHandler(departure, exp);
       }}
+      disableGutters
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}

@@ -1,19 +1,24 @@
 import { fetchTrains } from '@/utils/fetchs';
-import { Avatar, Stack, Chip } from '@mui/material';
+import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import LinearProgress from '@mui/material/LinearProgress';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
 
 const TrainTimeline = ({ datetime, departure, arrival }) => {
   const [trains, setTrains] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const trains = await fetchTrains(datetime, departure, arrival);
-
       setTrains(trains);
+      setLoading(false);
     })();
-  }, [setTrains, datetime, departure, arrival]);
+  }, [setTrains, setLoading, datetime, departure, arrival]);
 
   const displayTrain = ({
     departureDate,
@@ -37,9 +42,15 @@ const TrainTimeline = ({ datetime, departure, arrival }) => {
   };
 
   return (
-    <Stack className='train-timeline' direction='row' spacing={1}>
-      {trains.map(displayTrain)}
-    </Stack>
+    <Box>
+      {loading ? (
+        <LinearProgress color='inherit' />
+      ) : (
+        <Stack className='train-timeline' direction='row' spacing={1}>
+          {trains.map(displayTrain)}
+        </Stack>
+      )}
+    </Box>
   );
 };
 

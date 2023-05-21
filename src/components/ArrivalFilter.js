@@ -3,7 +3,7 @@ import StationSelector from '@/components/StationSelector';
 import Typography from '@mui/material/Typography';
 import TrainTimeline from '@/components/TrainTimeline';
 import { Stack } from '@mui/material';
-import RemoveIcon from '@mui/icons-material/Remove';
+import ClearIcon from '@mui/icons-material/Clear';
 import Divider from '@mui/material/Divider';
 import SportsScoreIcon from '@mui/icons-material/SportsScore';
 import HoverIcon from './HoverIcon';
@@ -47,7 +47,7 @@ const ArrivalFilter = ({
         <Stack direction='row' alignItems='center' spacing={1}>
           <HoverIcon
             icon={<SportsScoreIcon />}
-            hoverIcon={<RemoveIcon color='error' />}
+            hoverIcon={<ClearIcon color='error' />}
             onClick={() => removeStation(arr.value)}
           />
           <Typography>{arr.label}</Typography>
