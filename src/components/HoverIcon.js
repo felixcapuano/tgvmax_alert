@@ -8,6 +8,7 @@ const HoverIcon = ({ icon, hoverIcon, onClick }) => {
     <IconButton
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={onClick}
     >
       {hovered ? hoverIcon : icon}
     </IconButton>

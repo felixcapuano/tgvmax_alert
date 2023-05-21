@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import ArrivalFilter from '@/components/ArrivalFilter';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
@@ -7,8 +9,10 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AddIcon from '@mui/icons-material/Add';
 import HoverIcon from '@/components/HoverIcon';
-import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const Departure = ({
   datetime,
@@ -17,6 +21,7 @@ const Departure = ({
   accordionChangeHandler,
 }) => {
   const [expanded, setExpanded] = useState(departure.expanded);
+  const [showNewArrival, setShowNewArrival] = useState(false);
 
   return (
     <Accordion
@@ -36,14 +41,30 @@ const Departure = ({
           <HoverIcon
             icon={<TrainIcon />}
             hoverIcon={<ClearIcon color='error' />}
-            onClick={() => closeHandler(departure.value)}
+            onClick={(e) => {
+              e.stopPropagation();
+              closeHandler(departure.value);
+            }}
           />
-
           <Typography>{departure.label}</Typography>
+          <IconButton
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowNewArrival(!showNewArrival);
+            }}
+            disabled={!expanded}
+          >
+            {!showNewArrival ? <AddIcon /> : <RemoveIcon />}
+          </IconButton>
         </Stack>
       </AccordionSummary>
       <AccordionDetails>
-        <ArrivalFilter datetime={datetime} departure={departure} />
+        <ArrivalFilter
+          datetime={datetime}
+          departure={departure}
+          showNewArrival={showNewArrival}
+          setShowNewArrival={setShowNewArrival}
+        />
       </AccordionDetails>
     </Accordion>
   );
